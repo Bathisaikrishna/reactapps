@@ -81,7 +81,7 @@ class Task extends React.Component {
           type="checkbox"
           value={this.props.done === true ? "checked" : ""}
         />
-        {this.props.taskname}
+        {this.props.name}
       </li>
     );
   }
@@ -129,18 +129,24 @@ class ToDoApp extends React.Component {
   jobs = 0;
   tasks = [{ name: "task1", id: this.jobs++, done: true }];
 
+  state = {
+    taskList: this.tasks
+  };
+
   myCallBack = desc => {
     const task = { name: desc, id: this.jobs++, done: false };
-    this.tasks.push(task);
-    console.log(`${this.tasks[0].name}`);
-    console.log(`${this.tasks[1].name}`);
-    console.log(`in callback ${task.name}, ${task.id}`);
+    let copy = this.state.taskList.slice();
+    copy.push(task);
+
+    this.setState({
+      taskList: copy
+    });
   };
   render() {
     return (
       <div>
         <Heading name="ToDoList App" />
-        <TaskContainer tasks={this.tasks} />
+        <TaskContainer tasks={this.state.taskList} />
         <Form callback={this.myCallBack} />
       </div>
     );
